@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Trading Journal & Portfolio Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <h1 class="logo">SComci<span class="logo-accent">Journal</span></h1>
+            <nav class="main-nav">
+                <button type="button" class="nav-btn active" data-section="dashboard">Dashboard</button>
+                <button type="button" class="nav-btn" data-section="trades">Trade History</button>
+                <button type="button" class="nav-btn" data-section="watchlist">Watchlist</button>
+                <button type="button" class="nav-btn" data-section="add-trade">Add Trade</button>
+                <button type="button" class="nav-btn" data-section="insights">Insights</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Toast for success/error messages -->
+        <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+        <!-- Loading overlay -->
+        <div id="loading" class="loading-overlay" aria-hidden="true"><div class="spinner"></div><span>Loading...</span></div>
+
+        <!-- Dashboard -->
+        <section id="section-dashboard" class="panel active">
+            <h2>Portfolio Dashboard</h2>
+            <div id="portfolio-summary" class="portfolio-summary"></div>
+            <div id="portfolio-holdings" class="portfolio-holdings"></div>
+        </section>
+
+        <!-- Trade History -->
+        <section id="section-trades" class="panel">
+            <h2>Trade History</h2>
+            <div class="filters">
+                <input type="text" id="filter-ticker" placeholder="Ticker" aria-label="Filter by ticker">
+                <select id="filter-type" aria-label="Filter by trade type">
+                    <option value="">All types</option>
+                    <option value="buy">Buy</option>
+                    <option value="sell">Sell</option>
+                </select>
+                <input type="text" id="filter-sector" placeholder="Sector" aria-label="Filter by sector">
+                <input type="date" id="filter-date-from" aria-label="From date">
+                <input type="date" id="filter-date-to" aria-label="To date">
+                <button type="button" id="btn-apply-filters" class="btn btn-primary">Apply</button>
+                <button type="button" id="btn-clear-filters" class="btn btn-secondary">Clear</button>
+            </div>
+            <div id="trades-list" class="trades-list"></div>
+        </section>
+
+        <!-- Watchlist -->
+        <section id="section-watchlist" class="panel">
+            <h2>Watchlist</h2>
+            <div class="watchlist-add">
+                <label for="watchlist-stock">Add stock:</label>
+                <select id="watchlist-stock" aria-label="Select stock"></select>
+                <input type="number" id="watchlist-target" step="0.01" placeholder="Target price" aria-label="Target price">
+                <select id="watchlist-priority" aria-label="Priority">
+                    <option value="1">1 - Low</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5 - High</option>
+                </select>
+                <button type="button" id="btn-add-watchlist" class="btn btn-primary">Add</button>
+            </div>
+            <div id="watchlist-items" class="watchlist-items"></div>
+        </section>
+
+        <!-- Add Trade form -->
+        <section id="section-add-trade" class="panel">
+            <h2>Add Trade</h2>
+            <form id="form-trade" class="form-trade">
+                <div class="form-row">
+                    <label for="trade-stock">Stock *</label>
+                    <select id="trade-stock" required aria-label="Stock"></select>
+                </div>
+                <div class="form-row">
+                    <label for="trade-type">Type *</label>
+                    <select id="trade-type" required aria-label="Trade type">
+                        <option value="buy">Buy</option>
+                        <option value="sell">Sell</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="trade-shares">Shares *</label>
+                    <input type="number" id="trade-shares" step="0.0001" min="0.0001" required aria-label="Shares">
+                </div>
+                <div class="form-row">
+                    <label for="trade-price">Price per share *</label>
+                    <input type="number" id="trade-price" step="0.01" min="0" required aria-label="Price per share">
+                </div>
+                <div class="form-row">
+                    <label for="trade-date">Date *</label>
+                    <input type="date" id="trade-date" required aria-label="Trade date">
+                </div>
+                <div class="form-row">
+                    <label for="trade-strategy">Strategy tag</label>
+                    <input type="text" id="trade-strategy" placeholder="e.g. long-term, momentum" aria-label="Strategy tag">
+                </div>
+                <div class="form-row">
+                    <label for="trade-notes">Notes</label>
+                    <textarea id="trade-notes" rows="3" placeholder="Why you entered or exited..." aria-label="Notes"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save Trade</button>
+                    <button type="reset" class="btn btn-secondary">Reset</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Insights -->
+        <section id="section-insights" class="panel">
+            <h2>Performance Insights</h2>
+            <div id="insights-cards" class="insights-cards"></div>
+            <div id="insights-most-traded" class="insights-most-traded"></div>
+        </section>
+    </main>
+
+    <!-- Edit Trade modal -->
+    <dialog id="modal-edit-trade" class="modal" aria-labelledby="modal-edit-title">
+        <div class="modal-content">
+            <h3 id="modal-edit-title">Edit Trade</h3>
+            <form id="form-edit-trade">
+                <input type="hidden" id="edit-trade-id">
+                <div class="form-row">
+                    <label for="edit-strategy">Strategy tag</label>
+                    <input type="text" id="edit-strategy" aria-label="Strategy tag">
+                </div>
+                <div class="form-row">
+                    <label for="edit-notes">Notes</label>
+                    <textarea id="edit-notes" rows="3" aria-label="Notes"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="button" id="btn-cancel-edit" class="btn btn-secondary">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
+    <script src="app.js"></script>
+</body>
+</html>
