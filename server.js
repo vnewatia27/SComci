@@ -22,7 +22,7 @@ const pool = new Pool({
     port: process.env.PGPORT || 5432,
     database: process.env.PGDATABASE || 'stock_journal',
     user: process.env.PGUSER || 'postgres',
-    password: process.env.PGPASSWORD || 'postgres'
+    password: process.env.PGPASSWORD || 'Bello09$'
 });
 
 // Default user for single-user demo (no auth in this assignment)
