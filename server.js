@@ -404,10 +404,6 @@ app.get('/api/health', async (req, res) => {
     }
 });
 
-// Export for Vercel serverless; only listen when run directly (e.g. node server.js)
-module.exports = app;
-if (require.main === module) {
-    app.listen(PORT, () => {
-        console.log(`Stock Trading Journal API running at http://localhost:${PORT}`);
-    });
-}
+app.listen(PORT, () => {
+    console.log(`Stock Trading Journal API running at http://localhost:${PORT}`);
+});
