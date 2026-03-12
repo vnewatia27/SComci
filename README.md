@@ -133,12 +133,3 @@ Relationships: Users have many Trades, Watchlist entries, and Portfolio_Snapshot
 - **Insights:** Total trades, total shares purchased, total buy cost, total sell proceeds, most traded stocks.  
 - **Feedback:** Toasts for success/error and a loading indicator during API calls.
 
-## Video Demonstration
-
-For grading: record a 3–5 minute screen capture with audio that includes:
-
-1. **Introduction** — Name and project title; brief description of the app.  
-2. **Feature walkthrough** — Show adding/editing/deleting trades, dashboard, filters, watchlist, and insights.  
-3. **Technical part** — Show or describe the database schema and foreign key relationships; discuss one technical challenge and how you solved it.
-
-Submit the video link (e.g. Google Drive, YouTube unlisted) as required by your instructor.
