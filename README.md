@@ -87,17 +87,17 @@ Open **http://localhost:3000** in a browser to use the app (the server serves th
 
 ```
 SComci/
-├── database.sql    # Schema and sample data for PostgreSQL
-├── server.js       # Express API and static file server
+├── database.sql    
+├── server.js       
 ├── package.json
 ├── README.md
 └── public/
-    ├── index.html  # Single-page UI
-    ├── styles.css  # Layout and styling
-    └── app.js      # Frontend logic and API calls
+    ├── index.html  
+    ├── styles.css 
+    └── app.js      
 ```
 
-## Database Schema
+## Database Stuff
 
 - **users** — `user_id` (PK), `full_name`, `email`, `created_at`  
 - **stocks** — `stock_id` (PK), `ticker_symbol`, `company_name`, `sector`, `exchange`  
@@ -107,7 +107,7 @@ SComci/
 
 Relationships: Users have many Trades, Watchlist entries, and Portfolio_Snapshots. Stocks are referenced by Trades and Watchlist.
 
-## API Endpoints
+## API Stuff
 
 | Method | Endpoint            | Description                    |
 |--------|---------------------|--------------------------------|
